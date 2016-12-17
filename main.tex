@@ -1,0 +1,95 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{siunitx}
+\usepackage{mhchem}
+\usepackage{multirow}
+
+\usepackage[pdftex]{color,graphicx}
+\pagestyle{plain}
+\usepackage{geometry}
+\newgeometry{margin=2.0cm}
+
+\newcommand{\ts}{\textsuperscript}
+\newcommand{\ic}{\texttt}
+\newcommand{\todo}{TODO: \texttt}
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+\usepackage[backend=biber,style=authoryear,sorting=nyt,dashed=false]{biblatex}
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+\addbibresource{references/references.bib} % note the .bib is required
+
+\linespread{1.6}
+
+%Wrong spellings!
+%parameterization
+%parameterizing
+%Paracon
+
+\title{Parametrization of Atmospheric Convection Literature Review}
+\date{December 17, 2016}
+\author{Mark Muetzelfeldt}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+Atmospheric convection arises through the action of gravity on differences in density. This is predominantly caused by variations in the temperature and, to a lesser extent, the moisture content of the air. Both of these effects can be modelled, under the assumptions of the ideal gas equation of state and the anelastic approximation, by:
+
+\begin{equation}
+    B = g \left(\frac{\theta_v'}{\overbar{\theta_v}}\right),
+\end{equation}
+
+\noindent
+where $B$ is the buoyancy acceleration, $g$ is the acceleration due to gravity, $\overbar{\theta}$ is the mean virtual potential temperature and $\theta_v' = \overbar{\theta_v} - \theta_v$ is the perturbation of virtual potential temperature. This simple equation hides a wealth of complexity. 
+
+Convection can also be thought of as a removal of instability. This instability can be built up by many mechanisms: surface heat fluxes, radiative cooling and upwards motion of air to name but a few. Convection will act to rearrange the air in the atmosphere to remove this instability and reach a lower energy state, provided that there is enough energy present to trigger the convection in the first place. These two complementary views of convection serve to highlight the point that it is caused by a local phenomena, and that its overall effect can be non-local.
+
+Considering only the dry case in an extremely idealized experiment, convection can still act to organize the overall flow of a fluid. In the case of of Rayleigh-B\'{e}nard convection \parencite{rayleigh1916lix}, where a thin fluid is subject to a negative temperature gradient between its bottom and top, convective cells can form. The fluid rises in the centre of these cells, and descends along their common boundaries. The organization is however dependent on a parameter, the ratio of convective to conductive heat transport, or the Rayleigh number. Simple numerical experiments using only leading order truncations of the equations developed to model this phenomena lead to the discovery chaos \parencite{lorenz1963deterministic}.
+
+The presence of moisture complicates the situation dramatically due to its changes in phase. In the atmosphere, as an air parcel rises it cools adiabatically as the pressure decreases. If the parcel has any water vapour in, it then when the water vapour pressure is equal to the saturation water vapour pressure for the given temperature the water vapour may condense at the parcel's Lifting Condensation Level (LCL). This process is dependent on sufficient numbers of Cloud Condensation Nuclei (CCNs), making it dependent on the chemical composition of the air. The collision-coalescence processes add extra complication to cloud liquid water and rain formation. Perhaps the most important effect though, is the release of latent heat that occurs as the water condenses, increasing the buoyancy of the air relative to its environment and thereby enhancing the convection. 
+
+On further rising, the temperature of the parcel will decrease to below the freezing point of the liquid water. Ice can exist above this level, but pure water will not spontaneously freeze until it reaches a temperature of \SI{-42}{\degree C}, and a variety of micophysical processes, such as the Bergeron-Findeisen process, are responsible for the formation of ice crystals. These crystals can have many shapes due to the hexagonal structure of ice, and dependent on the particular conditions in which they formed. Additionally, they can aggregate together, or accrete water forming graupel or hail. All of these phase changes, and of course the reverse, are associated with a release or uptake of heat, which complicate the modelling of convection in one single cloud cell.
+
+The above discussion considers a single parcel of air. Clouds can be considered as a collection of such parcels in a convective updraught, although in so doing it is necessary to remember that as these parcels move relative to their surroundings, turbulent processes will cause mixing between the parcel and all other parcels, particularly those of the surrounding environmental air where the wind shear is greatest. This mixing process is two-way: the cloud plume entrains environmental air, which is typically cooler and drier, and plume detrains air into the environment, which is typically warmer and moister. The entrainment process can be favourable for the cooling of the environmental air, as the evaporation of the cloud liquid water will cause its temperature to drop below its original value. This can lead to the formation of convective downdraughts in the clouds, which may be further enhanced by the drag and evaporation of rain. \todo{compensating subsidence and stability}
+
+Dependent on the state of the atmosphere, the convective plume may reach all or none of the height levels given above. In the case of thermals in the boundary layer (BL), they may not have enough vertical momentum to rise above the capping inversion at the top of the BL and reach the LCL. Thermals that reach the LCL, and so form clouds, may hit another inversion. An example of this are the trade wind cumuli, where the descending branch of the Hadley cell causes a temperature inversion through adiabatic heating. In this case the latent heat released will be taken up again by the evaporation of the cloud liquid water over the height of and at the top of the cumuli clouds through entrainment of the environmental air. This will lead to a redistribution of energy across the height of the cumulus layer, but no net release of heat in the vertical column containing the cloud.
+
+Updraughts that penetrate higher may reach the Level of Free Convection (LFC). This is where a cloud parcel attains positive buoyancy, through the release of its latent heat from the condensation of its water vapour. The cloud plume will now rise until it reaches a level where it no longer has positive buoyancy at the Level of Neutral Buoyancy (LNB), and could well overshoot this level due to its upwards kinetic energy. Dependent on the vertical profile of the atmosphere, this can be in the troposphere in the case of cumulus congestus clouds, or it could reach to the tropopause and beyond in the case of deep convection, or cumulonimbus clouds.
+
+The maximum vertical scale of deep convection is thus the depth of the troposphere, or approximately \SI{15}{km} in the tropics. The horizontal scale of a single convective cloud cell is of the order of \SI{1}{km}. However, under certain conditions, these clouds can organize into larger groups, known as Mesoscale Convective Systems (MCSs). These MCSs can have horizontal length scales far larger than the individual cells of which they are formed, up to \SI{1000}{km} in length \parencite{redelsperger1997mesoscale}, but typically of the order of \SI{100}{km}. Of particular interest in this study will be squall lines, which are an MCS that form in the presence of lower-tropospheric wind shear \parencite{rotunno1988theory}.
+
+\todo{gravity waves (where?)}
+
+\todo{interaction with radiation (where?)}
+
+\subsection{Parametrization of atmospheric convection}
+
+\subsection{Radiative-convective equilibrium}
+
+Radiative-Convective Equilibrium (RCE) is a simple way of modelling the atmospheric temperature profile. In this model, radiation can be thought of as being split into a short-wave component, to which the atmosphere is almost transparent, and a long-wave component, to which the atmosphere is almost opaque. Sensible and latent surface heat fluxes, as well as long-wave radiation, act to heat the lowest layer of the atmosphere. This layer in turn re-emits long-wave radiation both back to the surface and to the layer above it. All other layers both absorb and emit long-wave radiation. These processes, on their own, would lead to an unstable atmosphere, with the lowest layers having a greater potential temperature than those above them. This leads to convection, which in the model is represented by a heat flux, which acts to warm the troposphere to a value close to that of an adiabatic parcel ascent.
+
+This simple RCE model bears little resemblance to the complex picture of convection outlined above. It can, however, understood in terms of the statistical properties of many convective cells averaged over their domain, or equivalently the properties of one cell averaged over many of its lifetimes. In this sense, it is possible to build a high-resolution model of RCE. Here, the domain must be large enough that the cloud cells can form without undue influence from neighbouring cells, and for there to be enough clouds that the statistical RCE balance can be established. 
+
+RCE in this form can then be used \todo{p13n?}.
+
+\section{Convective parametrization schemes}
+
+\subsection{Mass flux schemes}
+
+\cite{kain1993convection}
+
+\subsection{Adjustment schemes}
+
+\cite{manabe1965simulated}
+
+\cite{betts1986new}
+
+\newpage
+\printbibliography[title={References}]
+
+%\newpage
+%\section*{Appendix}
+\end{document}
