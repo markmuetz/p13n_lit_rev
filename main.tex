@@ -26,7 +26,7 @@
 %Paracon
 
 \title{Parametrization of Atmospheric Convection Literature Review}
-\date{December 17, 2016}
+\date{December 18, 2016}
 \author{Mark Muetzelfeldt}
 
 \begin{document}
@@ -35,6 +35,13 @@
 
 \section{Introduction}
 \label{sec:introduction}
+
+% General:
+% * Introduce topics in a logical order.
+% * Introduce most things/everything that you will use later on.
+% * Tie things together, make it clear why you are introducing them.
+% * Set the scene.
+% * General to specific.
 
 Atmospheric convection arises through the action of gravity on differences in density. This is predominantly caused by variations in the temperature and, to a lesser extent, the moisture content of the air. Both of these effects can be modelled, under the assumptions of the ideal gas equation of state and the anelastic approximation, by:
 
@@ -61,31 +68,102 @@ Updraughts that penetrate higher may reach the Level of Free Convection (LFC). T
 
 The maximum vertical scale of deep convection is thus the depth of the troposphere, or approximately \SI{15}{km} in the tropics. The horizontal scale of a single convective cloud cell is of the order of \SI{1}{km}. However, under certain conditions, these clouds can organize into larger groups, known as Mesoscale Convective Systems (MCSs). These MCSs can have horizontal length scales far larger than the individual cells of which they are formed, up to \SI{1000}{km} in length \parencite{redelsperger1997mesoscale}, but typically of the order of \SI{100}{km}. Of particular interest in this study will be squall lines, which are an MCS that form in the presence of lower-tropospheric wind shear \parencite{rotunno1988theory}.
 
+On a planetary scale, convection plays a vital role in the ascending branches of the Hadley and Walker circulations. These circulations cannot be explained by large-scale ascents of air; under large-scale ascent the vertical profile of moist static energy in the atmosphere would lead to a build up of entropy in the middle troposphere. This is opposed to observed supply of a entropy at the surface through sensible and latent heat fluxes, and loss of entropy at the tropopause through radiation to space \parencite{yano2016hot}. This inconsistency can be resolved by the ``hot-tower'' mechanism of \cite{riehl1958heat}, whereby convection acts in tall thin towers to transport moist entropy directly from the top of the BL to the tropopause. Indeed, this mechanism provides a basic model for the mass flux parametrization schemes in Section \ref{sec:mass_flux_schemes}.
+
+\todo{CAPE}
+
+\todo{scales of convection}
+
+\todo{importance of convection}
+
 \todo{gravity waves (where?)}
 
 \todo{interaction with radiation (where?)}
 
-\subsection{Parametrization of atmospheric convection}
+\subsection{Numerical modelling of atmospheric convection}
 
-\subsection{Radiative-convective equilibrium}
+\begin{itemize}
+    \item General need for p13n of unresolved processes.
+    \item Discussion of unresolved vs subgrid vs subfilter.
+    \item Brief intro to Reynold's decomposition.
+    \item Introduction of idea of GZ.
+    \item Lead on to resolution, scale-aware p13ns.
+\end{itemize}
+
+\subsubsection{High-resolution cloud resolving models}
+
+\begin{itemize}
+    \item Emphasize that high-resolution is relative: \SI{100}{m} with justification.
+    \item Necessary components: Dynamics, MP, Rad, Chem, GW, turb (all must be mentioned above).
+    \item Questions of accuracy, veracity, convergence.
+    \item Discuss GZ as applicable to high-res.
+    \item Justify their use as `truth'. e.g. as opposed to observations.
+\end{itemize}
+
+\subsubsection{Lower-resolution models}
+
+\begin{itemize}
+    \item Low-resolution with respect to what?
+    \item Need for p13n of convection.
+    \item Discuss GZ as applicable to low-res.
+    \item Set out what a scale-aware conv. p13n should be capable of.
+    \item In particular: how to compare them to high-res `truth'?
+\end{itemize}
+
+\subsubsection{Radiative-convective equilibrium}
 
 Radiative-Convective Equilibrium (RCE) is a simple way of modelling the atmospheric temperature profile. In this model, radiation can be thought of as being split into a short-wave component, to which the atmosphere is almost transparent, and a long-wave component, to which the atmosphere is almost opaque. Sensible and latent surface heat fluxes, as well as long-wave radiation, act to heat the lowest layer of the atmosphere. This layer in turn re-emits long-wave radiation both back to the surface and to the layer above it. All other layers both absorb and emit long-wave radiation. These processes, on their own, would lead to an unstable atmosphere, with the lowest layers having a greater potential temperature than those above them. This leads to convection, which in the model is represented by a heat flux, which acts to warm the troposphere to a value close to that of an adiabatic parcel ascent.
 
 This simple RCE model bears little resemblance to the complex picture of convection outlined above. It can, however, understood in terms of the statistical properties of many convective cells averaged over their domain, or equivalently the properties of one cell averaged over many of its lifetimes. In this sense, it is possible to build a high-resolution model of RCE. Here, the domain must be large enough that the cloud cells can form without undue influence from neighbouring cells, and for there to be enough clouds that the statistical RCE balance can be established. 
 
-RCE in this form can then be used \todo{p13n?}.
+RCE in this form can then be used \todo{use/utility for conv. p13n?}.
 
 \section{Convective parametrization schemes}
 
-\subsection{Mass flux schemes}
+% Overview of conv. p13n schemes. Broadly historical.
+% Key ideas:
+% * adjustment
+% * mass flux
+% * QE
+% * closure
+% * trigger
 
-\cite{kain1993convective}
+\subsection{Mass flux schemes}
+\label{sec:mass_flux_schemes}
+
+\begin{itemize}
+    \item Outline of MF p13n scheme, basics, as per \cite{stensrud2009parameterization} p229.
+    \item Mention other schemes here or after? AS74, PanRandall, GR, Tiedtke, (+others?).
+\end{itemize}
+
+
+\subsubsection{Kain-Fritsch scheme}
+As an example of a mass flux scheme, the Kain-Fritsch parametrization scheme (KF; \cite{kain1990one, kain1993convective, kain2003parameterized}) will be described. It uses a bulk cloud model that includes representations of updraughts, downdraughts and compensating subsidence. It relies on a trigger function that determines whether deep convection will take place in a column. It uses a closure that is based on removing 90 \% of CAPE within given advective time period, $\tau_c$. It is one of the available convection parametrization schemes available in the NCEP Eta Model. This scheme demonstrates key concepts of a mass flux scheme, and is also used by the \cite{plant2008stochastic} scheme, so a detailed description of it will help to clarify some concepts and lay some foundations for later sections.
+
+The first task is to determine whether deep convection will take place - the trigger function. This is done by evaluating whether potential Updraught Source Layers (USLs) of the atmosphere are unstable to convection. Potential USLs are taken as layers of \SI{50}{hPa} depth, whose properties are the mean thermodynamic properties of levels of the model in its depth. The first USL is located at the lowest model level, and the subsequent USLs are located at each model level up to \SI{300}{hPa}. Starting with the first USL, a parcel of air from the USL is raised to its LCL, then given a temperature perturbation to determine whether it can reach its LFC. If it can, and can continue to rise for a minimum specified depth of \SI{3}{}-\SI{4}{km} then this USL is taken as the source layer for the convection. If not, the subsequent USLs are evaluated, and the process terminates on reaching the first model level above \SI{300}{hPa}. \todo{CHECK THIS!!} Triggering happens if any of the USLs are unstable to convection under the above criteria, and does not if no USLs are unstable. \todo{mention shallow convection as in PC2008 appendix?}
+
+The updraught is then represented using an entraining-detraining plume model. An air parcel, taken from the USL with the temperature perturbation applied \todo{CHECK!}, is lifted, entraining and detraining air, until it reaches the point where the vertically integrated buoyancy is zero, or the cloud top. The use of vertically integrated buoyancy allows for the parcel to overshoot its LNB, representing its vertical kinetic energy. Mixtures of parcel and environmental air are entrained or detrained dependent on whether they are positively or negatively buoyant respectively, with respect to the environment. This leads to detrainment typically happening within \SI{100}{}-\SI{200}{hPa} of the cloud top. The condensate produced in the updraught either arrives at the surface as precipitation, is used to drive cooling in the downdraught through evaporation, or a small amount is detrained near the cloud top.
+
+The downdraught starts at \SI{150}{hPa} above the top of the USL. It uses a fixed entrainment rate above the top of the USL, and detrains below this level. It continues downwards until it either reaches the surface, or loses its negative buoyancy. Detraimnent is distributed evenly over this level. It remains nearly saturated above the top of the USL, then dries at a rate of 20 \% relative humidity per kilometre below this height.
+
+Compensating vertical motion is calculated based on the mass flux of the updraught and downdraught so that the net vertical mass flux at each level in the column is zero. This typically leads to warming and drying of the atmosphere through subsidence (compensating rising, although uncommon, is also possible).
+
+Finally, a closure must be specified to relate the updraught mass flux to the grid-scale values for each column. This is calculated by arbitrarily picking an initial value for the updraught mass flux, using it in the cloud model described above to adjust the profile in the column, and using the adjusted profile to calculate a CAPE. If this new cape calculated to be 10 \% or less of the original CAPE by the end of the advective time period, $\tau_c$, then the closure has been satisfied, otherwise the updraught mass flux is increased \todo{or decreased?} as necessary until the closure is satisfied. $\tau_c$ is bound between \SI{30}{}-\SI{60}{min}.
 
 \subsection{Adjustment schemes}
 
 \cite{manabe1965simulated}
 
 \cite{betts1986new}
+
+\cite{betts1986new2}
+
+\subsection{Stochastic schemes}
+\label{sec:stochastic_schemes}
+
+\cite{plant2008stochastic}
+
+\cite{sakradzija2016stochastic}
 
 \newpage
 \printbibliography[title={References}]
